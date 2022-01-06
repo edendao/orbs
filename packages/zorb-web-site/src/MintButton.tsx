@@ -1,15 +1,16 @@
-import { css } from "@emotion/css";
+import { css } from "@emotion/css"
 import {
   ModalActionLayout,
   useWalletButton,
   useWalletModalState,
   useWeb3Wallet,
-} from "@zoralabs/simple-wallet-provider";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { TimeLeft } from "./TimeLeft";
-import { BigNumber, ethers } from "ethers";
-import { NETWORK_ID, ZORB_CONTRACT } from "./env-vars";
-import { getStatus, Status } from "./mint-status";
+} from "@zoralabs/simple-wallet-provider"
+import { BigNumber, ethers } from "ethers"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+
+import { NETWORK_ID, ZORB_CONTRACT } from "./env-vars"
+import { Status, getStatus } from "./mint-status"
+import { TimeLeft } from "./TimeLeft"
 
 // The ERC-20 Contract ABI, which is a common contract interface
 // for tokens (this is the Human-Readable ABI format)
@@ -17,57 +18,57 @@ const ZORB_API = [
   "function adminMint(address to)",
   "function mint()",
   "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)",
-];
+]
 
 const MintModalContent = ({ setError, setMintId }: any) => {
-  const { active, account, library } = useWeb3Wallet();
-  const { openModalByName } = useWalletModalState();
-  const [minting, setMinting] = useState<boolean>(false);
+  const { active, account, library } = useWeb3Wallet()
+  const { openModalByName } = useWalletModalState()
+  const [minting, setMinting] = useState<boolean>(false)
   const contract = useMemo(() => {
     // The Contract object
-    return new ethers.Contract(ZORB_CONTRACT, ZORB_API, library);
-  }, [library]);
+    return new ethers.Contract(ZORB_CONTRACT, ZORB_API, library)
+  }, [library])
 
   const doMint = useCallback(async () => {
     try {
-      const signerContract = contract.connect(await library.getSigner());
-      let hasSetMintId = false;
-      console.log(signerContract);
+      const signerContract = contract.connect(await library.getSigner())
+      let hasSetMintId = false
+      console.log(signerContract)
       signerContract.on(
         "Transfer",
         (from: string, to: string, tokenId: BigNumber) => {
-          console.log({ from, to, account });
+          console.log({ from, to, account })
           if (from === ethers.constants.AddressZero && to === account) {
-            hasSetMintId = true;
-            setMintId(tokenId.toNumber().toString());
-            openModalByName("success");
+            hasSetMintId = true
+            setMintId(tokenId.toNumber().toString())
+            openModalByName("success")
           }
-        }
-      );
-      const minting = await signerContract.mint();
-      setMinting(true);
-      await minting.wait();
+        },
+      )
+      const minting = await signerContract.mint()
+      setMinting(true)
+      await minting.wait()
       setTimeout(() => {
         if (!hasSetMintId) {
-          openModalByName("success");
+          openModalByName("success")
         }
-      }, 10000);
+      }, 10000)
     } catch (e) {
       if (e?.error?.message) {
-        setError(e.error.message);
-        openModalByName("errorModal");
+        setError(e.error.message)
+        openModalByName("errorModal")
       } else {
-        setError(e.message || e.toString());
-        openModalByName("errorModal");
+        setError(e.message || e.toString())
+        openModalByName("errorModal")
       }
     }
-  }, [contract, openModalByName, setMintId]);
+  }, [contract, openModalByName, setMintId])
 
   useEffect(() => {
     if (active) {
-      doMint();
+      doMint()
     }
-  }, [active]);
+  }, [active])
 
   return (
     <div
@@ -96,54 +97,54 @@ const MintModalContent = ({ setError, setMintId }: any) => {
       <p>Gas fees apply when minting.</p>
       {minting && <p>Waiting for network confirmation...</p>}
     </div>
-  );
-};
+  )
+}
 
 export const MintButton = ({}) => {
-  const { active, account, deactivate } = useWeb3Wallet();
-  const { openModal } = useWalletButton();
-  const { openModalByName, closeModal } = useWalletModalState();
-  const lastActive = useRef<any>();
-  const [error, setError] = useState();
-  const [mintId, setMintId] = useState<string | undefined>();
+  const { active, account, deactivate } = useWeb3Wallet()
+  const { openModal } = useWalletButton()
+  const { openModalByName, closeModal } = useWalletModalState()
+  const lastActive = useRef<any>()
+  const [error, setError] = useState()
+  const [mintId, setMintId] = useState<string | undefined>()
 
-  const [yourZorb, setYourZorb] = useState<string | undefined>(undefined);
+  const [yourZorb, setYourZorb] = useState<string | undefined>(undefined)
 
   useEffect(() => {
     if (account) {
       fetch(
-        `https://rinkeby.ether.actor/0xd70E10Cff7450BEfC708eDb47E14eA5D47a9186C/zorbForAddress/${account}`
+        `https://rinkeby.ether.actor/0xd70E10Cff7450BEfC708eDb47E14eA5D47a9186C/orbForAddress/${account}`,
       )
         .then((r) => r.text())
         .then((data) => {
-          setYourZorb(data);
-        });
+          setYourZorb(data)
+        })
     }
-  }, [account]);
+  }, [account])
 
   useEffect(() => {
     // if (!lastActive.current && active) {
     //   mint();
     // }
-    lastActive.current = active;
-  }, [active, lastActive]);
+    lastActive.current = active
+  }, [active, lastActive])
   useEffect(() => {
     // attempt deactivate
-    console.log(active);
+    console.log(active)
     if (active) {
-      deactivate();
+      deactivate()
     }
-  }, []);
+  }, [])
 
   const mint = useCallback(async () => {
     if (active) {
-      openModalByName("mintModal");
+      openModalByName("mintModal")
     } else {
-      openModal();
+      openModal()
     }
-  }, [active, openModal, openModalByName]);
+  }, [active, openModal, openModalByName])
 
-  const mintStatus = getStatus();
+  const mintStatus = getStatus()
 
   return (
     <>
@@ -197,7 +198,7 @@ export const MintButton = ({}) => {
         {mintId ? (
           <button
             onClick={() => {
-              window.location.href = `/nft/${mintId}`;
+              window.location.href = `/nft/${mintId}`
             }}
             className={css`
               background: #333333;
@@ -220,7 +221,7 @@ export const MintButton = ({}) => {
         ) : (
           <button
             onClick={() => {
-              closeModal();
+              closeModal()
             }}
             className={css`
               background: #333333;
@@ -347,5 +348,5 @@ export const MintButton = ({}) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}

@@ -959,6 +959,11 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.3.2.tgz#92df481362e366c388fc02133cf793029c744cea"
   integrity sha512-i/pOaOtcqDk4UqsrOv735uYyTbn6dvfiuVu5hstsgV6c4ZKUtu88/31zT2BzkCg+3JfcwOfgg2TtRKVKKZIGkQ==
 
+"@openzeppelin/contracts-upgradeable@^4.4.1":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.4.1.tgz#5d2c0e82cc1f94ee38a27572217ef103d5c3d0ef"
+  integrity sha512-84dUN+TBY42D52BzUc4RHxU4KORs8Ys7dj3nH0WX1QKtlS6rrN45gL+sxaotkPdCqFLVLPyj+kd8GfJ4puxVjA==
+
 "@openzeppelin/contracts@^4.4.0":
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.4.1.tgz#3382db2cd83ab565ed9626765e7da92944b45de8"
@@ -1230,7 +1235,7 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*", "@types/node@^16.4.0":
+"@types/node@*":
   version "16.4.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.4.0.tgz#2c219eaa3b8d1e4d04f4dd6e40bc68c7467d5272"
   integrity sha512-HrJuE7Mlqcjj+00JqMWpZ3tY8w7EUd+S0U3L1+PQSWiXZbOgyQDvi+ogoUxaHApPJq5diKxYBQwA3iIlNcPqOg==
@@ -1244,6 +1249,11 @@
   version "12.20.16"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.20.16.tgz#1acf34f6456208f495dac0434dd540488d17f991"
   integrity sha512-6CLxw83vQf6DKqXxMPwl8qpF8I7THFZuIwLt4TnNsumxkp1VsRZWT8txQxncT/Rl2UojTsFzWgDG4FRMwafrlA==
+
+"@types/node@^17.0.8":
+  version "17.0.8"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.8.tgz#50d680c8a8a78fe30abe6906453b21ad8ab0ad7b"
+  integrity sha512-YofkM6fGv4gDJq78g4j0mMuGMkZVxZDgtU0JRdx6FgiJDG+0fY0GKVolOV8WqVmEhLCXkQRjwDdKyPxJp/uucg==
 
 "@types/node@^8.0.0":
   version "8.10.66"
